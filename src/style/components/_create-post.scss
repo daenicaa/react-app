@@ -1,0 +1,24 @@
+.create-post {
+  .button-underline {
+    width: auto;
+    display: block;
+    margin-bottom: 33px;
+    &:first-child:not(:last-child){
+      margin-right: 34px;
+    }
+  }
+  a{ color: inherit; }
+}
+.create-post-image {
+  height: 540px;
+  background-color: $create-post-img-bg;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  // img {
+  //   width: 100%;
+  //   height: auto;
+  // }
+}

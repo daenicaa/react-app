@@ -1,0 +1,28 @@
+.l-container {
+  width: 1120px;
+  max-width: 1120px;
+  margin: 0 auto;
+  @include max-screen($breakpoint-mobile) {
+    width: 640px;
+    max-width: 640px;
+  }
+}
+
+.l-header {
+  background-color: $base-background-color;
+  z-index: 999999;
+}
+.l-footer {
+  color: $base-font-color-light;
+  padding: 78px 0 0;
+  background-color: $footer-bg-color-dark;
+}
+.l-footer,
+.l-header,
+.l-hero,
+.l-main {
+  min-width: 1120px;
+  @include max-screen($breakpoint-mobile) {
+    min-width: 768px;
+  }
+}

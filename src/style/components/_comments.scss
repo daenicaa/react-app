@@ -1,0 +1,40 @@
+.comments {
+  border-top: 1px solid $comment-border-color;
+  button {
+    width: 210px;
+    display: block;
+    margin: 10px 0 148px auto;
+  }
+}
+.comments-title {
+  font-size: 50px;
+  margin: 60px 0 39px;
+}
+
+.comment {
+  font-family: YuGothic Light;
+  font-weight: bold;
+  line-height: 2;
+  padding: 60px 40px 53px;
+  margin-bottom: 50px;
+  background-color: $comment-bg-color;
+}
+.comment-date {
+  font-family: Montserrat;
+  font-weight: bold;
+  display: block;
+  margin-top: 21px;
+}
+.comment-form {
+  textarea {
+    height: 200px;
+    resize: none;
+    border: 1px solid $comment-border-color;
+    padding: 45px 40px;
+    &::placeholder {
+      color: inherit;
+      font-style: italic;
+      opacity: .5;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+@mixin sprite-width($sprite,$scale:1) {
+  width: nth($sprite, 5) * $scale;
+}
+
+@mixin sprite-height($sprite,$scale:1) {
+  height: nth($sprite, 6) * $scale;
+}
+
+@mixin sprite-position($sprite,$scale:1) {
+  $sprite-offset-x: nth($sprite, 3) * $scale;
+  $sprite-offset-y: nth($sprite, 4) * $scale;
+  background-position: $sprite-offset-x $sprite-offset-y;
+}
+
+@mixin sprite-image($sprite) {
+  $sprite-image: nth($sprite, 9);
+  background-image: url(#{$sprite-image});
+  background-repeat: no-repeat;
+}
+
+@mixin sprite-size($sprite,$scale:1) {
+  background-size: nth($sprite, 7)*$scale nth($sprite, 8)*$scale;
+}
+
+@mixin sprite($sprite,$scale:1) {
+  display: inline-block;
+  @include sprite-image($sprite);
+  @include sprite-position($sprite, $scale);
+  @include sprite-width($sprite, $scale);
+  @include sprite-height($sprite, $scale);
+  @include sprite-size($sprite, $scale);
+}
+
+@mixin line-clamp($line-height, $font-size, $lines, $color){
+  line-height: $line-height;
+  height: $font-size * $line-height * $lines + px;
+  overflow: hidden;
+  position: relative;
+  word-break: break-all;
+  text-align: justify;
+  &:before,
+  &:after {
+    position: absolute;
+  }
+  &:before {
+    content: '...';
+    background: $color;
+    right: 0;
+    text-align: center;
+    width: 1em;
+    top: $font-size * $line-height * ($lines - 1) + px;
+  }
+  &:after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: 0;
+    z-index: 2;
+    background: $color;
+  }
+}
+
+//minxin for buttons
+@mixin button-modifier($background-color, $text-color) {
+  color: $text-color;
+  background-color: $background-color;
+  border-color: darken($background-color, 20%)
+}
+
+//mixin for animations
+@mixin keyframe ($animation_name) {
+    @-webkit-keyframes $animation_name {
+        @content;
+    }
+
+    @-moz-keyframes $animation_name {
+        @content;
+    }
+
+    @-o-keyframes $animation_name {
+        @content;
+    }
+
+    @keyframes $animation_name {
+        @content;
+    }
+}
+
+@mixin animation ($delay, $duration, $animation, $direction: forward, $fillmode: fowards) {
+    -webkit-animation-delay: $delay;
+    -webkit-animation-duration: $duration;
+    -webkit-animation-name: $animation;
+    -webkit-animation-fill-mode: $fillmode;
+    -webkit-animation-direction: $direction;
+
+    -moz-animation-delay: $delay;
+    -moz-animation-duration: $duration;
+    -moz-animation-name: $animation;
+    -moz-animation-fill-mode: $fillmode;
+    -moz-animation-direction: $direction;
+
+    animation-delay: $delay;
+    animation-duration: $duration;
+    animation-name: $animation;
+    animation-fill-mode: $fillmode;
+    animation-direction: $direction;
+}

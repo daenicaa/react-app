@@ -1,0 +1,76 @@
+button {
+  font-weight: bold;
+}
+.button {
+  font-size: 20px;
+  height: 70px;
+  width: 100%;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.3s;
+  &.borderless {
+    border: none;
+    background: 0;
+  }
+  &:hover{
+    opacity: .9;
+    transform: scale(1.03);
+  }
+  @include button-modifier($default-btn-bg-color, $default-btn-text-color);
+}
+
+.button-dark {
+  font-weight: bold;
+  @include button-modifier($primary-btn-bg-color, $primary-text-color-light);
+  border: none;
+}
+
+.button-scroll {
+  font-size: 16px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: none;
+  i { margin-bottom: 10px; }
+}
+
+.button-create {
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.button-underline {
+  font-size: 20px;
+  font-weight: bold;
+  color: inherit;
+  text-decoration: underline;
+}
+.button-browse-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  .button {
+    width: 260px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .button-browse {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+  }
+}

@@ -1,0 +1,57 @@
+//antialiased,subpixel-antialiased,none
+$font-smoothing: antialiased;
+
+//auto,optimizeSpeed,optimizeLegibility,geometricPrecision
+$text-rendering: auto;
+
+
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+$base-font-family: 'Montserrat';
+//$base-font-family: Lato;
+$base-font-size: 18px;
+$base-font-color: #101010;
+$base-font-color-light: #fff;
+$base-background-color: #fff;
+$base-letter-spacing: 0.1em;
+
+//$color-primary
+//$color-accent
+
+$breakpoint-tablet: 1120px;
+$breakpoint-mobile: 768px;
+
+//custom
+$primary-text-color-light: #fff;
+$primary-text-color-dark: #333;
+$nav-hover-text-color: #9d9693;
+
+//form input
+$login-form-bg: #fff;
+$form-control-bg: #fff;
+$form-control-border-bg: #101010;
+$form-control-placeholder-bg: #ddd;
+
+$primary-bg-color-dark: #101010;
+$primary-bg-color-light: #ffffff;
+
+//button variables
+$primary-btn-bg-color: #101010;
+$default-btn-bg-color: #f6f6f6;
+$default-btn-text-color: #333;
+
+//footer
+$footer-bg-color-dark: #292929;
+
+//comments
+$comment-bg-color: #f5f5f5;
+$comment-border-color: #707070;
+
+//Post
+$create-post-img-bg: #d6d6d6;
+
+$slick-font-path: "/node_modules/slick-carousel/slick/fonts/" !default;
+$slick-font-family: "slick" !default;
+$slick-loader-path: "/node_modules/slick-carousel/slick-carousel/slick/" !default;
+$slick-arrow-color: black !default;
+
+$path-font: "/public/assets/fonts";

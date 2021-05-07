@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { BrowserRouter as Router } from "react-router-dom";
+
 import './App.css';
+import './style/style.scss';
+
+import Header from './layout/Header';
+import Main from './layout/Main';
+import Footer from './layout/Footer';
 
 function App() {
+
+  const [state, setState] = useState(
+    { isLoggedIn: false, showRegister: false }
+  );
+
+  function handleLoginClick() {
+    setState({isLoggedIn: true});
+  };
+
+  function handleLogoutClick() {
+    setState({isLoggedIn: false});
+  };
+
+  function handleRegisterClick() {
+    setState({showRegister: true});
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header isLoggedIn={state.isLoggedIn} state={state} handleRegisterClick={handleRegisterClick} handleLoginClick={handleLoginClick} handleLogoutClick={handleLogoutClick} />
+      <Main isLoggedIn={state.isLoggedIn}/>
+      <Footer />
+    </Router>
   );
 }
 

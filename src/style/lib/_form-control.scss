@@ -1,0 +1,16 @@
+.form-control {
+  height: 60px;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: $form-control-bg;
+  border: 1px solid;
+  border-color: $form-control-border-bg;
+  border-radius: 0;
+}
+.form-label {
+  font-size: 18px;
+}
+::placeholder {
+  color: $form-control-placeholder-bg;
+}
