@@ -12,10 +12,12 @@ function Main(props){
         <Route path="/create-post">
           <CreatePost />
         </Route>
-        <Route path="/news/:title" component={() => <NewsPage isLoggedIn={props.isLoggedIn}/>}></Route>
+        <Route path="/news/:id">
+          <NewsPage />
+        </Route>
 
         <Route path="/">
-          <Home isLoggedIn={props.isLoggedIn}/>
+          <Home />
         </Route>
       </Switch>
     );

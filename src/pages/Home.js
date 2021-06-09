@@ -1,18 +1,26 @@
-import React from "react";
-
+import React, { useContext, useEffect, useState } from 'react';
 //import Hero from '../components/Hero';
 import News from '../components/News';
+import { AuthContext } from '../context/auth';
 
-function Home(props) {
+function Home() {
+	const { user } = useContext(AuthContext);
 
-		return (
-      <main>
-        
-        <div className="l-main l-container">
-          <News isLoggedIn={props.isLoggedIn}/>
-        </div>
-      </main>
-		);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+			if (user.token) {
+				setIsLoggedIn(true)
+			}
+	}, [user]);
+
+	return (
+    <main>
+      <div className="l-main l-container">
+        <News isLoggedIn={isLoggedIn} />
+      </div>
+    </main>
+	);
 
 }
 

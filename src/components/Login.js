@@ -1,105 +1,148 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import Register from './Register';
+import { useForm } from '../util/hooks';
+import { AuthContext } from '../context/auth';
+import { LOGIN_MUTATION } from '../graphql/queries';
+import { useMutation } from '@apollo/client';
+import Modal from '../components/Modal';
 
-function Login(props) {
-  const isLoggedIn = props.state.isLoggedIn;
-  const showRegister = props.state.showRegister;
-  const isOpenForm = props.state.isOpenForm;
 
-  //inner states
-  const [state, setState] = useState(
-    { isFormOpen: false, showRegister: false, fade: false }
-  );
-  const cssClasses = [ 'form flex flex-center', state.fade ? 'formOpened': 'formClosed' ];
+function Login(){
+  const history = useHistory();
+  const [currentView, setCurrentView] = useState('logIn');
+  const [showForm, setShowForm] = useState(false);
+  const [isModalOpen, setModalIsOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
+  const [errors, setErrors] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  let button;
+  const cssClasses = [ 'form flex flex-center', showForm ? 'formOpened': 'formClosed' ];
 
-  function handleLoginClick(e){
+  const { handleChange, handleSubmit, values } = useForm(loginUserCallback, {
+    email: '',
+    password: ''
+  });
+
+  useEffect(() => {
+    if (user.token) {
+      setIsLoggedIn(true)
+    }
+  }, [user])
+
+  const [loginUser] = useMutation(LOGIN_MUTATION, {
+    update(_, { data: { authenticate: token } }) {
+      if (token) {
+        localStorage.setItem('token', token)
+        setIsLoggedIn(true)
+        setShowForm(false);
+        window.location.reload();
+      }
+      else {
+        setErrors('Incorrect password or email!');
+      }
+    },
+    pollInterval: 500,
+    variables: {
+      email: values.email,
+      password: values.password
+    }
+  })
+
+  function loginUserCallback() {
+    loginUser();
+  }
+
+  function handleChangeView(e){
     e.preventDefault();
-    props.handleLoginClick();
-    setState({ isOpenForm: false, fade: false });
-  }
-  function handleLogoutClick(){
-    props.handleLogoutClick();
-    setState({ isOpenForm: false, showRegister: false });
+    let view = e.target.classList[0] == 'register' ? 'register' : 'logIn'
+    setCurrentView(view)
   }
 
-  function handleRegisterClick(e){
-    e.preventDefault();
-    props.handleRegisterClick();
+  function toggleModal(){
+		setModalIsOpen(!isModalOpen);
+	};
+
+  function closeModal(){
+		setModalIsOpen(false);
+	};
+
+  function handleLogout(){
+    if (user) {
+      logout();
+      setIsLoggedIn(false)
+      setShowForm(false);
+    }
+    setModalIsOpen(false);
+    history.push('/');
+    window.location.reload();
   }
 
-  function handleOpenFormClick() {
-    setState({isOpenForm: true, fade: true});
+  function handleRegister(){
+    if (user) {
+      logout();
+      setIsLoggedIn(false)
+    }
+  }
+
+   function handleShowForm(e){
+    setShowForm(true);
   }
 
   function handleCloseFormClick() {
-    setState({isOpenForm: false, fade: false});
+    setShowForm(false);
   }
 
-  function showRegisterModal() {
-    let value = !state.showRegister
-    setState({ showRegister: value, isOpenForm: true, fade: true })
-  }
-
-  if (isLoggedIn) {
-    button = <button onClick={handleLogoutClick}>LOGOUT</button>;
-  } else if (state.isOpenForm){
-    button = <button onClick={handleCloseFormClick}>CLOSE</button>;
-  } else {
-    button = <button onClick={handleOpenFormClick}>LOGIN</button>;
-  }
-
-    return (
-      <div>
-      {button}
-      {state.showRegister ? (
-        <form className={cssClasses.join(' ')}>
-          <div className="form-login">
-            <h2 className="form-header">REGISTER</h2>
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input className="form-control" type="email"/>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Password</label>
-              <input className="form-control" type="password"/>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Confirm Password</label>
-              <input className="form-control" type="password"/>
-            </div>
-            <button className="button button-dark" onClick={handleRegisterClick}>
-              REGISTER
-            </button>
-            <div className="form-registration u-align-center">
-              Already have an account? <a onClick={showRegisterModal}><strong>LOGIN HERE</strong></a>
-            </div>
-          </div>
-        </form>
-      ) : (
-        <form className={cssClasses.join(' ')}>
+  function handleCurrentView() {
+    if (currentView === 'logIn') {
+      return (
+        <form className={cssClasses.join(' ')} noValidate onSubmit={handleSubmit}>
           <div className="form-login">
             <h2 className="form-header">LOGIN</h2>
             <div className="form-group">
               <label className="form-label">Email</label>
-              <input className="form-control" type="email"/>
+              <input className="form-control" type="email" name="email" onChange={handleChange} required/>
             </div>
             <div className="form-group">
               <label className="form-label">Password</label>
-              <input className="form-control" type="password"/>
+              <input type="password" name="password" className="form-control" onChange={handleChange} required />
             </div>
-            <button className="button button-dark" onClick={handleLoginClick}>
+            <button className="button button-dark">
               LOGIN
             </button>
             <div className="form-registration u-align-center">
-              No account yet? <a onClick={showRegisterModal}><strong>REGISTER HERE</strong></a>
+              No account yet? <button type="button" className="register login-register-btn" onClick={handleChangeView}>REGISTER HERE</button>
             </div>
           </div>
         </form>
-      )}
-      </div>
-    );
+      )
+    } else {
+      return (
+        <Register clicked={handleChangeView} register={handleRegister} cssClasses={cssClasses}/>
+      )
+    }
+  }
 
+  let button;
+
+  if (isLoggedIn) {
+    button = <button className="form-header" onClick={toggleModal}>LOGOUT</button>;
+  } else if (showForm){
+    button = <button className="form-header" onClick={handleCloseFormClick}>CLOSE</button>;
+  } else {
+    button = <button className="form-header" onClick={handleShowForm}>LOGIN</button>;
+  }
+
+  return (
+    <div>
+      { button }
+      { showForm ? handleCurrentView() : null}
+      { isModalOpen ?
+        <Modal />
+        : null
+      }
+    </div>
+  )
 }
 
 export default Login;
