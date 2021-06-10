@@ -8,70 +8,7 @@ import { GET_POSTS } from '../graphql/queries';
 import Article from '../components/Article';
 
 function News(props){
-		// const [newsList, setNews] = useState({
-		// 		news: [
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		// 			{
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//       {
-		//         date:'2019.06.19',
-		//         img:'/assets/img/article-image.png',
-		//         title:'サンプルテキストサンプル ルテキストサンプルテキストサンプルテキストサンプル ルテキスト'
-		//       },
-		//     ]
-		// })
+		
 		const [toShow, settoShow] = useState({ articlesToShow: 7	})
 
 		function loadMore(e) {
