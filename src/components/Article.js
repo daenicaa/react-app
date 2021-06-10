@@ -2,12 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Article(props) {
-
-		const {img, title, date} = props.item;
-		const id = props.id;
+		const {img, title, date, id} = props.item;
+		const keyId = props.id;
 		return (
-      <article className="article-item" key={`news-${id}`}>
-        <Link to={`/news/${title}`}>
+      <article className="article-item" key={`news-${keyId}`}>
+        <Link to={`/news/${id}`}>
           <div className="article-image">
             <img src={img} alt={title} />
           </div>

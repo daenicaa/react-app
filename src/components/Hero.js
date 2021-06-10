@@ -1,100 +1,108 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import $ from 'jquery';
+import { useQuery } from "@apollo/client";
+import Moment from 'moment';
+
+import { GET_POSTS } from '../graphql/queries';
 
 function Hero(props){
-  //constructor(props){
-    //super(props)
-    this.lastElem = null;
-    this.lastElemIndex = null;
-    this.slideWidth = null;
-    this.triggerClick = this.triggerClick.bind(this);
-  //}
+  var lastElem = null;
+  var lastElemIndex = null;
+  var slideWidth = null;
+  //this.triggerClick = this.triggerClick.bind(this);
 
-  componentDidMount(){
+  useEffect(() => {
     const triggers = $(".js-hero-triggers li");
     const slides = $(".js-hero-item");
     const mask = $(".js-hero-carousel");
 
-    this.lastElem = triggers.length-1;
-    this.lastElemIndex = this.lastElem - 1;
-    this.slideWidth = slides.width();
+       lastElem = triggers.length-1;
+      lastElemIndex = lastElem - 1;
+      slideWidth = slides.width();
 
-    triggers.first().addClass('selected');
-    mask.css('width', this.slideWidth*(this.lastElem+1) +'px');
-    slides.css('width', this.slideWidth +'px')
-  }
+      triggers.first().addClass('selected');
+      mask.css('width', slideWidth*(lastElem+1) +'px');
+      slides.css('width', slideWidth +'px')
 
-  sliderResponse(target) {
-    $(".js-hero-carousel").stop(true,false).animate({'left':'-'+ this.slideWidth*target +'px'},300);
+  });
+
+  function sliderResponse(target) {
+    $(".js-hero-carousel").stop(true,false).animate({'left':'-'+ slideWidth*target +'px'},300);
     $(".js-hero-triggers li").removeClass('selected').eq(target).addClass('selected');
   }
 
-  triggerClick(event) {
+  function triggerClick(event) {
     let index = event.currentTarget.getAttribute("data-index");
     let triggerSelectedIndex = Number($('.js-hero-triggers li.selected').attr("data-index"));
     if(index){
       if ( !$(event.currentTarget).hasClass('selected') ) {
         let target = Number(event.currentTarget.getAttribute("data-index"));
-        this.sliderResponse(target);
+        sliderResponse(target);
       }
     } else {
       let direction = event.currentTarget.getAttribute("data-direction");
       if(direction === 'next'){
-        triggerSelectedIndex === this.lastElem ? triggerSelectedIndex = 0 : triggerSelectedIndex = triggerSelectedIndex + 1;
+        triggerSelectedIndex === lastElem ? triggerSelectedIndex = 0 : triggerSelectedIndex = triggerSelectedIndex + 1;
       }else {
-        triggerSelectedIndex === 0 ? triggerSelectedIndex = this.lastElem : triggerSelectedIndex = triggerSelectedIndex-1;
+        triggerSelectedIndex === 0 ? triggerSelectedIndex = lastElem : triggerSelectedIndex = triggerSelectedIndex-1;
       }
-      this.sliderResponse(triggerSelectedIndex);
+      sliderResponse(triggerSelectedIndex);
     }
   }
 
+  let heroposts = '';
+  const { loading, data } = useQuery(GET_POSTS);
 
-    const sliders = [
-      {
-        date:'2019.06.19',
-        img:'/assets/img/hero-img.png',
-        text:'サンプルテキスト サンプル ルテキストサンプルテキスト'
-      },
-      {
-        date:'2019.06.19',
-        img:'/assets/img/hero-img.png',
-        text:'サンプルテキスト サンプル ルテキストサンプルテキスト'
-      },
-      {
-        date:'2019.06.19',
-        img:'/assets/img/hero-img.png',
-        text:'サンプルテキスト サンプル ルテキストサンプルテキスト'
-      }
-    ];
+  if (data) {
+    heroposts = data.posts;
+    console.log("data", data)
+  }
+
+  const [toShow, settoShow] = useState({ articlesToShow: 3	})
 
 		return (
-      <div className="l-hero hero-wrapper">
-        <ul className="hero-triggers js-hero-triggers">
-        {sliders.map((item,index) => (
-          <li key={`trigger-${index}`} data-index={index} onClick={this.triggerClick}></li>
-        ))}
-        </ul>
-        <ul className="hero-controls">
-          <li className="hero-control prev js-previous" data-direction='previous' onClick={this.triggerClick}></li>
-          <li className="hero-control next js-next" data-direction='next' onClick={this.triggerClick}></li>
-        </ul>
-        <div className="hero-flex">
-          <div className="hero js-hero-carousel">
-          {sliders.map((item,id) => (
-            <div className="hero-item js-hero-item" key={`hero-${id}`}>
-              <div className="l-container hero-container">
-                <div className="hero-content">
-                  <span className="hero-heading">{item.text}</span>
-                  <time className="hero-time">{item.date}</time>
-                </div>
-              </div>
-              <img className="img-full" src={item.img} alt="サンプルテキスト"/>
+        <div className="l-hero hero-wrapper">
+          <ul className="hero-triggers js-hero-triggers">
+          {loading ? (
+               <p>Loading posts...</p>
+           ) : (
+              heroposts &&
+                heroposts.slice(0,3).map((item,index) => (
+                <li key={`trigger-${index}`} data-index={index} onClick={triggerClick}></li>
+              ))
+            )}
+          </ul>
+          <ul className="hero-controls">
+            <li className="hero-control prev js-previous" data-direction='previous' onClick={triggerClick}>
+              <i className=""></i>
+            </li>
+            <li className="hero-control next js-next" data-direction='next' onClick={triggerClick}>
+              <i className=""></i>
+            </li>
+          </ul>
+          <div className="hero-flex">
+            <div className="hero js-hero-carousel">
+              {loading ? (
+                  <p>Loading posts...</p>
+               ) : (
+                  heroposts &&
+                  heroposts.slice(0,3).map((item,id) => (
+                    <div className="hero-item js-hero-item" key={`hero-${id}`}>
+                      <div className="l-container hero-container">
+                        <div className="hero-content">
+                          <span className="hero-heading">{item.title}</span>
+                          <time className="hero-time">{Moment(item.createdAt).format('YYYY.MM.d')}</time>
+                        </div>
+                      </div>
+                      <img className="img-full" src={item.image} alt={item.title}/>
+                    </div>
+                  ))
+              )}
             </div>
-          ))}
           </div>
         </div>
-      </div>
-		);
+
+  )
 
 }
 

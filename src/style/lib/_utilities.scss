@@ -1,6 +1,6 @@
-.u-align-right { text-align: right; }
-.u-align-left { text-align: left; }
-.u-align-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
 .u-mobile-hidden {
   display: block;
   @include max-screen($breakpoint-mobile) { display: none; }

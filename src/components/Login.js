@@ -100,13 +100,14 @@ function Login(){
           <div className="form-login">
             <h2 className="form-header">LOGIN</h2>
             <div className="form-group">
-              <label className="form-label">Email</label>
+              <label className="form-label text-left">Email</label>
               <input className="form-control" type="email" name="email" onChange={handleChange} required/>
             </div>
             <div className="form-group">
-              <label className="form-label">Password</label>
+              <label className="form-label text-left">Password</label>
               <input type="password" name="password" className="form-control" onChange={handleChange} required />
             </div>
+            <p className="alert danger">{errors}</p>
             <button className="button button-dark">
               LOGIN
             </button>

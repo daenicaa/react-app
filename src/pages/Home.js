@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-//import Hero from '../components/Hero';
+import Hero from '../components/Hero';
 import News from '../components/News';
 import { AuthContext } from '../context/auth';
 
@@ -16,6 +16,7 @@ function Home() {
 
 	return (
     <main>
+			<Hero />
       <div className="l-main l-container">
         <News isLoggedIn={isLoggedIn} />
       </div>
