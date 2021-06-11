@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { useQuery } from "@apollo/client";
 import Moment from 'moment';
 
-import { GET_POSTS } from '../graphql/queries';
+import { GET_POSTS, GET_HEROPOSTS, SINGLE_POST } from '../graphql/queries';
 
 function Hero(props){
   var lastElem = null;
@@ -50,15 +50,9 @@ function Hero(props){
     }
   }
 
-  let heroposts = '';
-  const { loading, data } = useQuery(GET_POSTS);
-
-  if (data) {
-    heroposts = data.posts;
-    console.log("data", data)
-  }
-
-  const [toShow, settoShow] = useState({ articlesToShow: 3	})
+  const { loading, data } = useQuery(GET_HEROPOSTS, {
+    variables: { offset: 0, limit: 3 }
+  });
 
 		return (
         <div className="l-hero hero-wrapper">
@@ -66,8 +60,8 @@ function Hero(props){
           {loading ? (
                <p>Loading posts...</p>
            ) : (
-              heroposts &&
-                heroposts.slice(0,3).map((item,index) => (
+              data &&
+                data.posts.map((item,index) => (
                 <li key={`trigger-${index}`} data-index={index} onClick={triggerClick}></li>
               ))
             )}
@@ -85,8 +79,8 @@ function Hero(props){
               {loading ? (
                   <p>Loading posts...</p>
                ) : (
-                  heroposts &&
-                  heroposts.slice(0,3).map((item,id) => (
+                  data &&
+                  data.posts.map((item,id) => (
                     <div className="hero-item js-hero-item" key={`hero-${id}`}>
                       <div className="l-container hero-container">
                         <div className="hero-content">

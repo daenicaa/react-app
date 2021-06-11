@@ -8,22 +8,39 @@ import { GET_POSTS } from '../graphql/queries';
 import Article from '../components/Article';
 
 function News(props){
-		
-		const [toShow, settoShow] = useState({ articlesToShow: 7	})
 
-		function loadMore(e) {
-			e.preventDefault();
-	    settoShow((prev) => {
-	      return { articlesToShow: prev.articlesToShow + 6 };
-	    });
-	  }
-
+		const [toShow, settoShow] = useState(7)
 		let posts = '';
-	  const { loading, data } = useQuery(GET_POSTS);
+		
+	  const { loading, data, fetchMore } = useQuery(GET_POSTS, {
+	    variables: { offset: 0, limit: 7 }
+	  });
 
 	  if (data) {
 	    posts = data.posts;
-	    //console.log("home data", data.posts)
+	  }
+
+		function loadMore(e) {
+			e.preventDefault();
+
+			fetchMore({
+        variables: {
+          offset: toShow,
+					limit: 6
+        },
+				updateQuery: (previousResult, { fetchMoreResult }) => {
+
+          if (!fetchMoreResult) return previousResult.posts;
+
+					const previousPosts = previousResult.posts;
+          const newPosts = fetchMoreResult.posts;
+
+          return {
+            posts: [...previousPosts, ...newPosts]
+          };
+        }
+      })
+			settoShow(toShow + 6);
 	  }
 
 		return (
@@ -39,16 +56,18 @@ function News(props){
 						 <p>Loading posts...</p>
 				  :
 				 	posts &&
-						posts.slice(0,(toShow.articlesToShow - 1)).map((item,id) => (
+						posts.slice(0,(toShow - 1)).map((item,id) => (
 						<Article key={`article-${id}`} item={item} id={id}/>
 					))
 				}
 				</div>
-				{posts.length > (toShow.articlesToShow - 1) ? (
-					<div className="flex flex-center">
-						<button className="button button-dark" onClick={loadMore}>LOAD MORE</button>
-					</div>
-				): (<span></span>)}
+				{
+					posts &&
+						posts.length > (toShow - 1) ?
+						<div className="flex flex-center">
+							<button className="button button-dark" onClick={loadMore}>LOAD MORE</button>
+						</div>
+					: null }
       </section>
 		);
 

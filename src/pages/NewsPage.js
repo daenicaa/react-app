@@ -26,6 +26,7 @@ function NewsPage(props) {
     pollInterval: 500,
   })
 
+
   useEffect(() => {
       if (user.token) {
         setIsLoggedIn(true)

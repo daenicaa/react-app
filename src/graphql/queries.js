@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_POSTS = gql`
-  query getPosts {
-    posts {
+query queryPosts($offset: Int!, $limit: Int!) {
+  posts(pagination: { offset: $offset, limit: $limit}) {
       id
       title
       content
@@ -111,5 +111,17 @@ export const REGISTER_USER = gql `
         email: $email,
         password: $password
     )
+  }
+`;
+
+export const GET_HEROPOSTS = gql`
+  query queryPosts($offset: Int!, $limit: Int!) {
+    posts(pagination: { offset: $offset, limit: $limit}) {
+      id
+      title
+      content
+      createdAt
+      image
+    }
   }
 `;
