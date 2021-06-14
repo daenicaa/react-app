@@ -13,6 +13,7 @@ function Login(){
   const [currentView, setCurrentView] = useState('logIn');
   const [showForm, setShowForm] = useState(false);
   const [isModalOpen, setModalIsOpen] = useState(false);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const [errors, setErrors] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,12 +60,16 @@ function Login(){
     setCurrentView(view)
   }
 
-  function toggleModal(){
-		setModalIsOpen(!isModalOpen);
+  function toggleLogoutModal(e){
+		//setModalIsOpen(!isModalOpen);
+    e.preventDefault();
+    setLogoutModalOpen(true)
+
+    console.log("isModalOpen", isModalOpen)
 	};
 
-  function closeModal(){
-		setModalIsOpen(false);
+  function closeLogoutModal(){
+		setLogoutModalOpen(false);
 	};
 
   function handleLogout(){
@@ -73,7 +78,8 @@ function Login(){
       setIsLoggedIn(false)
       setShowForm(false);
     }
-    setModalIsOpen(false);
+    //setModalIsOpen(false);
+    setLogoutModalOpen(false);
     history.push('/');
     window.location.reload();
   }
@@ -92,6 +98,15 @@ function Login(){
   function handleCloseFormClick() {
     setShowForm(false);
   }
+
+  // function cancelEditTrigger(e){
+	// 	e.preventDefault();
+	// 	//$(".mask").addClass("active");
+	// }
+
+	// function closeAlertModal(){
+	// 	$(".mask").removeClass("active");
+	// }
 
   function handleCurrentView() {
     if (currentView === 'logIn') {
@@ -127,7 +142,7 @@ function Login(){
   let button;
 
   if (isLoggedIn) {
-    button = <button className="form-header" onClick={toggleModal}>LOGOUT</button>;
+    button = <button className="form-header" onClick={toggleLogoutModal}>LOGOUT</button>;
   } else if (showForm){
     button = <button className="form-header" onClick={handleCloseFormClick}>CLOSE</button>;
   } else {
@@ -138,8 +153,17 @@ function Login(){
     <div>
       { button }
       { showForm ? handleCurrentView() : null}
-      { isModalOpen ?
-        <Modal />
+      { isLogoutModalOpen ?
+        <div>
+          <div role="dialog" className={`mask ${isLogoutModalOpen ? "active" : ""}`}></div>
+          <div className="modal" role="alert">
+            <h2>Are you sure you want to logout?</h2>
+            <div className="row flex-space-between">
+              <button className="col-lg-6 button button-dark" onClick={handleLogout}>Yes</button>
+              <button className="col-lg-5 button" onClick={closeLogoutModal}>No</button>
+            </div>
+          </div>
+        </div>
         : null
       }
     </div>
