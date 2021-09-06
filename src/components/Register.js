@@ -23,6 +23,7 @@ function Register(props){
           }
       },
       onError(err){
+        console.log('err', err)
         setErrors(err.graphQLErrors[0].extensions.exception.errors)
       },
       variables: {

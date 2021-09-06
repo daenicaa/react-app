@@ -5,14 +5,12 @@ import { useForm } from '../util/hooks';
 import { AuthContext } from '../context/auth';
 import { LOGIN_MUTATION } from '../graphql/queries';
 import { useMutation } from '@apollo/client';
-import Modal from '../components/Modal';
 
 
 function Login(){
   const history = useHistory();
   const [currentView, setCurrentView] = useState('logIn');
   const [showForm, setShowForm] = useState(false);
-  const [isModalOpen, setModalIsOpen] = useState(false);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const [errors, setErrors] = useState('');
@@ -61,11 +59,8 @@ function Login(){
   }
 
   function toggleLogoutModal(e){
-		//setModalIsOpen(!isModalOpen);
     e.preventDefault();
     setLogoutModalOpen(true)
-
-    console.log("isModalOpen", isModalOpen)
 	};
 
   function closeLogoutModal(){

@@ -23,6 +23,11 @@
   font-size: 20px;
   letter-spacing: 0;
   text-align: justify;
-  @include line-clamp(1.2, 20, 3, inherit);
+  display: block;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 4.5em;
+  line-height: 1.5em;
+  //@include line-clamp(1.2, 20, 3, inherit);
   &:before { display: none; }
 }
